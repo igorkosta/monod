@@ -1,0 +1,27 @@
+{
+  "name": "monod",
+  "version": "0.0.1-dev",
+  "description": "Deploy your lambda functions from your monorepo",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "watch": "jest --watchAll",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "monorepo",
+    "lambda",
+    "deployment",
+    "aws"
+  ],
+  "author": "Igor",
+  "license": "MIT",
+  "homepage": "https://github.com/igorkosta/monod",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:igorkosta/monod.git"
+  },
+  "bugs": {
+    "url": "https://github.com/igorkosta/monod/issues"
+  }
+}
