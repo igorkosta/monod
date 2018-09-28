@@ -15,6 +15,14 @@ const { spawn } = require('child_process')
 const ignoredDirs = [ '.git',
                       'node_modules',
                       'coverage' ]
+
+// extract in its own file
+const homedir = require('os').homedir()
+const envs = fs.readFileSync(`${homedir}/.aws/credentials`, { 'encoding': 'utf-8' })
+               .toString()
+               .match(/\[(.*?)\]/g) // match returns an array of strings in square brackets e.g. ['[env1]', '[env2]']
+               .map(el => { return el.slice(1, -1) }) // remove the brackets
+
 clear()
 console.log(
   chalk.yellow(
@@ -38,18 +46,18 @@ const deployment = () => {
       name: 'lambdas',
       message: 'Choose λ functions to deploy',
       choices: dirs('.').filter(elt => !ignoredDirs.includes(elt)),
-      validate: (value) => {
-        if (value.length) {
-          return true
-        }
-        return chalk.red(`Please, choose at least one λ function. Use SPACEBAR to choose λ functions`)
-      }
+    //  validate: (value) => {
+    //    if (value.length) {
+    //      return true
+    //    }
+    //    return chalk.red(`Please, choose at least one λ function. Use SPACEBAR to choose λ functions`)
+    //  }
     },
     {
       type: 'list',
       name: 'env',
       message: 'Choose environment you want λ functions to be deployed to',
-      choices: ['dev', 'stage', 'prod'],
+      choices: envs,
       default: 'dev'
     }
   ]
@@ -72,12 +80,12 @@ const deploy = (lambda, stage) => {
 
 const run = async () => {
   const lambdas = dirs('.').filter(elt => !ignoredDirs.includes(elt))
-  if (!lambdas.length) {
-    console.log(
-      chalk.red(`No folders found - nothing to choose from!`)
-    )
-    return
-  }
+ // if (!lambdas.length) {
+ //   console.log(
+ //     chalk.red(`No folders found - nothing to choose from!`)
+ //   )
+ //   return
+ // }
   const settings = await deployment()
   for (let lambda of settings.lambdas) {
       const lambdaDir = path.join(process.cwd(), lambda)
