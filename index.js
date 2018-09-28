@@ -16,12 +16,7 @@ const ignoredDirs = [ '.git',
                       'node_modules',
                       'coverage' ]
 
-// extract in its own file
-const homedir = require('os').homedir()
-const envs = fs.readFileSync(`${homedir}/.aws/credentials`, { 'encoding': 'utf-8' })
-               .toString()
-               .match(/\[(.*?)\]/g) // match returns an array of strings in square brackets e.g. ['[env1]', '[env2]']
-               .map(el => { return el.slice(1, -1) }) // remove the brackets
+const envs = require('./lib/readEnvs')()
 
 clear()
 console.log(
