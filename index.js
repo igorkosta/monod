@@ -7,7 +7,6 @@ const chalk = require('chalk')
 const figlet = require('figlet')
 const inquirer = require('inquirer')
 const path = require('path')
-const fs = require('fs')
 const { spawn } = require('child_process')
 
 // read ignored directories from
@@ -59,7 +58,6 @@ const deployment = () => {
   return inquirer.prompt(qstns)
 }
 
-
 const deploy = (lambda, stage) => {
   const childProcess = spawn('sls', ['deploy', '--stage', stage, '--aws-profile', stage], { stdio: 'inherit' })
   childProcess.on('close', (code) => {
@@ -83,10 +81,10 @@ const run = async () => {
  // }
   const settings = await deployment()
   for (let lambda of settings.lambdas) {
-      const lambdaDir = path.join(process.cwd(), lambda)
-      process.chdir(lambdaDir)
-      console.log(`Deploying ${lambda} to the ${settings.env} environment`)
-      deploy(lambda, settings.env)
+    const lambdaDir = path.join(process.cwd(), lambda)
+    process.chdir(lambdaDir)
+    console.log(`Deploying ${lambda} to the ${settings.env} environment`)
+    deploy(lambda, settings.env)
   }
 }
 
