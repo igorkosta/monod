@@ -1,3 +1,4 @@
+# dirs ignored per default
 .git
 node_modules
 coverage
