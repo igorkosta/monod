@@ -6,6 +6,7 @@ const clear = require('clear')
 const chalk = require('chalk')
 const figlet = require('figlet')
 const inquirer = require('inquirer')
+const commander = require('commander')
 const path = require('path')
 const { spawn } = require('child_process')
 
@@ -37,13 +38,7 @@ const deployment = () => {
       type: 'checkbox',
       name: 'lambdas',
       message: 'Choose λ functions to deploy',
-      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt)),
-    //  validate: (value) => {
-    //    if (value.length) {
-    //      return true
-    //    }
-    //    return chalk.red(`Please, choose at least one λ function. Use SPACEBAR to choose λ functions`)
-    //  }
+      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt))
     },
     {
       type: 'list',
@@ -76,14 +71,23 @@ const deploy = (lambda, stage, region) => {
   process.chdir('..')
 }
 
+const runWithParams = () => {
+  commander
+    .command('deploy')
+    .alias('d')
+    .description('Deploy your λ functions with one line')
+    .option('-f, --functions [array of functions]', 'e.g. apps,instances')
+    .option('-p, --profile [AWS profile]', 'e.g. arivalstage')
+    .option('-r, --region [AWS region]', 'e.g. us-east-1')
+    .action(function (args) {
+      console.log('-------------------------')
+      console.object(args)
+    })
+}
+
 const run = async () => {
-  const lambdas = dirs('.').filter(elt => !ignoredDirs.includes(elt))
- // if (!lambdas.length) {
- //   console.log(
- //     chalk.red(`No folders found - nothing to choose from!`)
- //   )
- //   return
- // }
+  // check the params - if there're none run the inquirer
+
   const settings = await deployment()
   for (let lambda of settings.lambdas) {
     const lambdaDir = path.join(process.cwd(), lambda)
