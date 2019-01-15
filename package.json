@@ -3,10 +3,12 @@
   "version": "0.0.1-dev",
   "description": "Deploy your lambda functions from your monorepo",
   "main": "index.js",
+  "bin": {
+    "monod": "./index.js"
+  },
   "scripts": {
     "test": "jest --coverage",
-    "watch": "jest --watchAll",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "jest --watchAll"
   },
   "keywords": [
     "monorepo",
@@ -23,5 +25,16 @@
   },
   "bugs": {
     "url": "https://github.com/igorkosta/monod/issues"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "clear": "^0.1.0",
+    "commander": "^2.19.0",
+    "figlet": "^1.2.0",
+    "inquirer": "^6.2.0"
   }
 }
