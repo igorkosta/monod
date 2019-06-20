@@ -4,7 +4,6 @@ If you use a `monorepo` to manage your lambda functions and every lambda
 function has its own folder - you can use `monod` to deploy them.
 
 # TODOs
-- [ ] Ignore `__tests__`, `node_modules`
-- [ ] Use .monodignore to ignore folders being deployed
+- [ ] Check if any of the available lambdas has been chosen (don't allow empty choice)
 - [ ] Get the list of aws-regions
 
