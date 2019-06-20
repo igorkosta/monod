@@ -38,7 +38,10 @@ const deployment = () => {
       type: 'checkbox',
       name: 'lambdas',
       message: 'Choose λ functions to deploy',
-      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt))
+      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt)),
+      validate: () => {
+        return !ignoredDirs
+      }
     },
     {
       type: 'list',
@@ -89,6 +92,7 @@ const run = async () => {
   // check the params - if there're none run the inquirer
 
   const settings = await deployment()
+  console.log(`SETTINGS: ${JSON.stringify(settings)}`)
   for (let lambda of settings.lambdas) {
     const lambdaDir = path.join(process.cwd(), lambda)
     process.chdir(lambdaDir)
