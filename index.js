@@ -38,10 +38,7 @@ const deployment = () => {
       type: 'checkbox',
       name: 'lambdas',
       message: 'Choose λ functions to deploy',
-      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt)),
-      validate: () => {
-        return !ignoredDirs
-      }
+      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt))
     },
     {
       type: 'list',
@@ -92,6 +89,9 @@ const run = async () => {
   // check the params - if there're none run the inquirer
 
   const settings = await deployment()
+  if (!settings.lambda) {
+    return console.error(`You have to choose at least one lambda function!`)
+  }
   console.log(`SETTINGS: ${JSON.stringify(settings)}`)
   for (let lambda of settings.lambdas) {
     const lambdaDir = path.join(process.cwd(), lambda)
