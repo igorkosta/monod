@@ -1,6 +1,6 @@
 {
   "name": "monod",
-  "version": "0.0.4-dev",
+  "version": "0.0.5-dev",
   "description": "Deploy your lambda functions from your monorepo",
   "main": "index.js",
   "bin": {

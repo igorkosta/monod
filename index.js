@@ -89,7 +89,7 @@ const run = async () => {
   // check the params - if there're none run the inquirer
 
   const settings = await deployment()
-  if (!settings.lambda) {
+  if (!settings.lambdas) {
     return console.error(`You have to choose at least one lambda function!`)
   }
   console.log(`SETTINGS: ${JSON.stringify(settings)}`)
