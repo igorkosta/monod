@@ -14,7 +14,7 @@ const { spawn } = require('child_process')
 // .monodignore
 const ignoredDirs = require('./lib/ignoredDirs.js')()
 const envs = require('./lib/readEnvs.js')()
-const regions = require('./lib/awsRegions.js')
+const { regions } = require('./lib/awsRegions.js')
 
 clear()
 console.log(
