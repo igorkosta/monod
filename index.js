@@ -29,16 +29,16 @@ const { join } = require('path')
 // get all folders in current directory
 // every lambda function has its own folder
 // https://stackoverflow.com/questions/10265798/determine-project-root-from-a-running-node-js-application
-// get rood directory of the project process.cwd()
+// get root directory of the project process.cwd()
 const dirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory())
 
-const deployment = () => {
+const deployment = (directory = '.') => {
   const qstns = [
     {
       type: 'checkbox',
       name: 'lambdas',
       message: 'Choose λ functions to deploy',
-      choices: dirs('.').filter(elt => !ignoredDirs.includes(elt))
+      choices: dirs(directory).filter(elt => !ignoredDirs.includes(elt))
     },
     {
       type: 'list',
@@ -68,7 +68,6 @@ const deploy = (lambda, stage, region) => {
   childProcess.on('error', (error) => {
     console.error(`Total fuckup: ${error}`)
   })
-  process.chdir('..')
 }
 
 const runWithParams = () => {
@@ -86,18 +85,25 @@ const runWithParams = () => {
 }
 
 const run = async () => {
-  // check the params - if there're none run the inquirer
+  // you can pass the directory where you functions
+  // are located
+  const args = process.argv.slice(2)
+  const directory = args[0]
 
-  const settings = await deployment()
+  const settings = await deployment(directory)
   if (!settings.lambdas) {
     return console.error(`You have to choose at least one lambda function!`)
   }
   console.log(`SETTINGS: ${JSON.stringify(settings)}`)
+
+  const workingDirectory = process.cwd()
   for (let lambda of settings.lambdas) {
-    const lambdaDir = path.join(process.cwd(), lambda)
+    const lambdaDir = path.join(process.cwd(), directory, lambda)
     process.chdir(lambdaDir)
     console.log(`Deploying ${lambda} to the ${settings.env} environment in region ${settings.region}`)
     deploy(lambda, settings.env, settings.region)
+
+    process.chdir(workingDirectory)
   }
 }
 
